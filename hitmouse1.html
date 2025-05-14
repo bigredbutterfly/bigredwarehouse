@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>打地鼠</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #game-container {
+            width: 500px;
+            height: 500px;
+            background-color: #f1f1f1;
+            position: relative;
+        }
+
+        .mole {
+            width: 50px;
+            height: 50px;
+            background-color: brown;
+            display: none;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="game-status">点击方块开始游戏</p>
+    <p id="hit-count" style="display: none">击中次数: <span id="count">0</span></p>
+    <div id="game-container"></div>
+
+    <script>
+        var hitCount = 0;
+        var hitCountElement = document.getElementById("count");
+        var gameContainer = document.getElementById("game-container");
+        var gameStatus = document.getElementById("game-status");
+        var moleTimeout;
+
+        function hitMole() {
+            if (hitCount === 0) {
+                gameStatus.style.display = 'none';
+                hitCountElement.parentElement.style.display = 'block';
+            }
+            hitCount++;
+            hitCountElement.textContent = hitCount;
+            var mole = document.querySelector(".mole");
+            gameContainer.removeChild(mole);
+            showMole();
+        }
+
+        function showMole() {
+            var gameContainerWidth = gameContainer.clientWidth;
+            var gameContainerHeight = gameContainer.clientHeight;
+            var mole = document.createElement("div");
+            mole.className = "mole";
+            mole.onclick = hitMole;
+            mole.style.left = Math.floor(Math.random() * (gameContainerWidth - 50)) + "px";
+            mole.style.top = Math.floor(Math.random() * (gameContainerHeight - 50)) + "px";
+            gameContainer.appendChild(mole);
+            mole.style.display = "block";
+        }
+
+        // 初始化，显示一个地鼠
+        showMole();
+
+        // 点击地鼠后出现另一个地鼠
+        gameContainer.addEventListener("click", function() {
+            var mole = document.querySelector(".mole");
+            gameContainer.removeChild(mole);
+            showMole();
+        });
+    </script>
+</body>
+
+</html>
+
+
